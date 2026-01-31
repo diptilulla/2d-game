@@ -1,5 +1,5 @@
 export const scalefactor = 2;
-export const scaleFactorCat = 0.65;
+export const scaleFactorCat = 0.7;
 export const dialogueData = {
     pc: 'This is my PC. I work mostly in React and Three.js these days. I’ve made a couple of personal projects. Anyway regardless of the language, I just like programming. You can check out my work on <a href="https://github.com/diptilulla" target="_blank">Github</a>!',
     certificate: 'I’m a <a href="https://learn.microsoft.com/api/credentials/share/en-us/DiptiLulla-9515/E7C75F95C3EAFD2D?sharingId=D9E6EC294CE290E1" target="_blank"><strong>Microsoft Certified: Azure Fundamentals (AZ-900)</strong></a>, with a strong foundational understanding of cloud services and Azure solutions.',
