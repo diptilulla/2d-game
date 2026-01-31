@@ -30,9 +30,17 @@ export function displayDialogue(text, onDisplayEnd) {
         dialogue.innerHTML = "";
         clearInterval(intervalRef);
         closeBtn.removeEventListener("click", onCloseBtnClick);
+        document.removeEventListener("keydown", onEnterKey);
+    }
+
+    function onEnterKey(e) {
+        if (e.key === "Enter") {
+            onCloseBtnClick();
+        }
     }
 
     closeBtn.addEventListener("click", onCloseBtnClick);
+    document.addEventListener("keydown", onEnterKey);
 }
 
 export function setCamScale(k) {
