@@ -9,6 +9,9 @@ export function displayDialogue(text, onDisplayEnd) {
     
     let index = 0;
     let currentText = "";
+    let timeoutRef = null;
+    let isClosed = false;
+
     const intervalRef = setInterval(() => {
         if(index < plainText.length) {
             currentText += plainText[index];
@@ -20,22 +23,35 @@ export function displayDialogue(text, onDisplayEnd) {
         // Once animation is done, render the full HTML with links
         dialogue.innerHTML = text;
         clearInterval(intervalRef)
+
+        timeoutRef = setTimeout(() => {
+            if (!isClosed) {
+                closeDialogue();
+            }
+        }, 10000);
     }, 5); // every 5ms adds a character
 
     const closeBtn = document.getElementById("close");
 
-    function onCloseBtnClick() {
+    function closeDialogue() {
+        if (isClosed) return;
+        isClosed = true;
         onDisplayEnd();
         dialogueBox.style.display = "none";
         dialogue.innerHTML = "";
         clearInterval(intervalRef);
+        if (timeoutRef) clearTimeout(timeoutRef);
         closeBtn.removeEventListener("click", onCloseBtnClick);
         document.removeEventListener("keydown", onEnterKey);
     }
 
+    function onCloseBtnClick() {
+        closeDialogue();
+    }
+
     function onEnterKey(e) {
         if (e.key === "Enter") {
-            onCloseBtnClick();
+            closeDialogue();
         }
     }
 

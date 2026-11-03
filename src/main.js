@@ -6,24 +6,24 @@ k.loadSprite("spritesheet", "./spritesheet.png", {
   sliceX: 39,
   sliceY: 31,
   anims: {
-    "idle-down": 952,
+    "idle-down": 960,
     "walk-down": {
-      from: 952,
-      to: 955,
+      from: 960,
+      to: 963,
       loop: true,
       speed: 8
     },
-    "idle-side": 991,
+    "idle-side": 999,
     "walk-side": {
-      from: 991,
-      to: 994,
+      from: 999,
+      to: 1002,
       loop: true,
       speed: 8
     },
-    "idle-up": 1030,
+    "idle-up": 1038,
     "walk-up": {
-      from: 1030,
-      to: 1033,
+      from: 1038,
+      to: 1041,
       loop: true,
       speed: 8 
     }
@@ -151,6 +151,15 @@ k.scene("main", async () => { // to get map.json data
 
   setCamScale(k);
 
+  player.isInDialogue = true;
+  displayDialogue(
+    "Hi! Welcome to my corner of the internet! I’m Dipti, a developer, aspiring product leader and creative exploring the intersection of technology, business and design. Come take a look around!",
+    () => {
+      player.isInDialogue = false;
+      k.canvas.focus();
+    }
+  );
+
   k.onResize(() => {
     setCamScale(k)
   })
@@ -249,6 +258,55 @@ k.scene("main", async () => { // to get map.json data
     }
   });
 
+  const moveWithArrowKey = (key) => {
+    if(player.isInDialogue)
+      return;
+
+    if (key === "ArrowLeft" || key === "left") {
+      player.move(-player.speed, 0);
+      player.flipX = true;
+      if(player.curAnim() !== "walk-side")
+        player.play("walk-side");
+      player.direction = "left";
+      return;
+    }
+
+    if (key === "ArrowRight" || key === "right") {
+      player.move(player.speed, 0);
+      player.flipX = false;
+      if(player.curAnim() !== "walk-side")
+        player.play("walk-side");
+      player.direction = "right";
+      return;
+    }
+
+    if (key === "ArrowUp" || key === "up") {
+      player.move(0, -player.speed);
+      if (player.curAnim() !== "walk-up") {
+        player.play("walk-up");
+        player.direction = "up";
+      }
+      return;
+    }
+
+    if (key === "ArrowDown" || key === "down") {
+      player.move(0, player.speed);
+      if (player.curAnim() !== "walk-down") {
+        player.play("walk-down");
+        player.direction = "down";
+      }
+    }
+  };
+
+  window.addEventListener("keydown", (event) => {
+    const arrowKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
+    if (!arrowKeys.includes(event.key))
+      return;
+
+    event.preventDefault();
+    moveWithArrowKey(event.key);
+  });
+
   k.onMouseRelease(() => onRelease(player));
   k.onKeyRelease("a", () => onRelease(player));
   k.onKeyRelease("d", () => onRelease(player));
@@ -256,6 +314,10 @@ k.scene("main", async () => { // to get map.json data
     console.log("rls")
     onRelease(player)});
   k.onKeyRelease("s", () => onRelease(player));
+  k.onKeyRelease("left", () => onRelease(player));
+  k.onKeyRelease("right", () => onRelease(player));
+  k.onKeyRelease("up", () => onRelease(player));
+  k.onKeyRelease("down", () => onRelease(player));
 })
 
 k.go("main"); // start game at main scene
