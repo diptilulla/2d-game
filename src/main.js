@@ -298,14 +298,10 @@ k.scene("main", async () => { // to get map.json data
     }
   };
 
-  window.addEventListener("keydown", (event) => {
-    const arrowKeys = ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"];
-    if (!arrowKeys.includes(event.key))
-      return;
-
-    event.preventDefault();
-    moveWithArrowKey(event.key);
-  });
+  k.onKeyDown("left", () => moveWithArrowKey("left"));
+  k.onKeyDown("right", () => moveWithArrowKey("right"));
+  k.onKeyDown("up", () => moveWithArrowKey("up"));
+  k.onKeyDown("down", () => moveWithArrowKey("down"));
 
   k.onMouseRelease(() => onRelease(player));
   k.onKeyRelease("a", () => onRelease(player));
